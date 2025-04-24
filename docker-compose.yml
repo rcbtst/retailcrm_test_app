@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: retailcrm_api
+    logging:
+      driver: "local"
+      options:
+        max-size: "100mb"
+        max-file: "5"
+    environment:
+      RETAILCRM_API_KEY: ${RETAILCRM_API_KEY:?error}
+      RETAILCRM_SUBDOMAIN: ${RETAILCRM_SUBDOMAIN:?error}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1/health"]
+      interval: 120s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+      start_interval: 3s
+    ports:
+      - "80:80"
+    restart: always

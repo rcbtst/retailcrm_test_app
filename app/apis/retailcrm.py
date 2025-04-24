@@ -129,7 +129,7 @@ class RetailCRM_API:
                     )
 
             return response_data
-        except RequestFailedException:
+        except (InvalidInputException, RequestFailedException):
             logger.exception("RetailCRM API request '%s %s' failed", method, path)
             raise
         except:
@@ -151,9 +151,6 @@ class RetailCRM_API:
         await self._client.aclose()
 
     async def get_clients(self, request: GetClientsRequest) -> GetClientsResponse:
-        r = await self._make_api_request("get", "/reference/payment-types")
-        print(r)
-
         response = await self._make_api_request(
             "GET",
             "/customers",
